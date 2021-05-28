@@ -38,7 +38,7 @@
     <input type="number" name="second-num" id="second-num" />
     <button id="calculate">Calculate</button>
     <br />
-    <output></output>
+ <!--   <output></output> -->
   </fieldset>
 
   <section id="error-btns">
@@ -56,17 +56,58 @@
   </section>
 
   <script>
+    class ArithmeticError extends Error{
+        constructor(msg) {
+            super(msg);
+            this.name = "ArithmeticError";
+        }
+    }
+
     let calculateBtn = document.querySelector('#calculate');
     calculateBtn.addEventListener('click', () => {
-      let output = document.querySelector('output');
-      let firstNum = document.querySelector('#first-num').value;
-      let secondNum = document.querySelector('#second-num').value;
-      let operator = document.querySelector('#operator').value;
-      output.innerHTML = eval(`${firstNum} ${operator} ${secondNum}`);
+      try {
+        let output = document.querySelector('output');
+        let firstNum = document.querySelector('#first-num').value;
+        let secondNum = document.querySelector('#second-num').value;
+        let operator = document.querySelector('#operator').value;
+        
+        output.value = eval(`${firstNum} ${operator} ${secondNum}`);
+      } catch(err) {
+          console.error(err);
+      }
+      
     });
 
     let errorBtns = Array.from(document.querySelectorAll('#error-btns > button'));
-    // TODO - Make buttons functional
+    
+    errorBtns[0].onclick = () => console.log("Console Log Demo");
+    errorBtns[1].onclick = () => console.error("Console Error Demo");
+    errorBtns[2].onclick = () => console.dir(errorBtns[2]);
+    errorBtns[3].onclick = () => console.dirxml(errorBtns[3]);
+    const label = "Group";
+    errorBtns[4].onclick = () => console.group(label);
+    errorBtns[5].onclick = () => console.groupEnd();
+    errorBtns[6].onclick = () => console.table();
+    const time = "Timer";
+    errorBtns[7].onclick = () => {
+        console.log("Timer start");
+        console.time(time);
+    }
+    errorBtns[8].onclick = () => {
+        console.timeEnd(time);
+        console.log("Timer end");
+    }
+    const recursive = (a) => {
+        if(a <= 0) 
+            recursive(a-1);
+        else
+            console.trace();
+    }
+    errorBtns[9].onclick = () => recursive(5);
+    errorBtns[10].onclick = () => { 
+        dkjahfaj.hi();
+        
+    }
   </script>
 </body>
 </html>
