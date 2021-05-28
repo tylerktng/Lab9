@@ -38,7 +38,7 @@
     <input type="number" name="second-num" id="second-num" />
     <button id="calculate">Calculate</button>
     <br />
- <!--   <output></output> -->
+   <output></output>
   </fieldset>
 
   <section id="error-btns">
@@ -54,12 +54,18 @@
     <button>Console Trace</button>
     <button>Trigger a Global Error</button>
   </section>
-
+  <script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>
   <script>
-    class ArithmeticError extends Error{
+    window.TrackJS && TrackJS.install({ 
+      token: "fe2f2683f8ce4163a72235adc68ef835"
+      // for more configuration options, see https://docs.trackjs.com
+    });
+  </script>
+  <script>
+    class InfError extends Error{
         constructor(msg) {
             super(msg);
-            this.name = "ArithmeticError";
+            this.name = "InfError";
         }
     }
 
@@ -70,9 +76,12 @@
         let firstNum = document.querySelector('#first-num').value;
         let secondNum = document.querySelector('#second-num').value;
         let operator = document.querySelector('#operator').value;
-        
-        output.value = eval(`${firstNum} ${operator} ${secondNum}`);
-      } catch(err) {
+        const value = eval(`${firstNum} ${operator} ${secondNum}`);
+        if(!isFinite(value)) throw new InfError('InfError');
+        output.value = value;
+    } catch(err) {
+          let output = document.querySelector('output');
+          output.value = err.name;
           console.error(err);
       }
       
@@ -108,6 +117,14 @@
         dkjahfaj.hi();
         
     }
+    //Error handler
+    window.onerror = (msg, src, lineno, colno, err) => {
+        if(err instanceof NaNError) {
+            console.error(err);
+            
+        }
+    }
+
   </script>
 </body>
 </html>
