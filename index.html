@@ -119,10 +119,7 @@
     }
     //Error handler
     window.onerror = (msg, src, lineno, colno, err) => {
-        if(err instanceof NaNError) {
-            console.error(err);
-            
-        }
+        console.log("An error was caught");
     }
 
   </script>
